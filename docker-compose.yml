@@ -1,0 +1,80 @@
+version: "3.9"
+services:
+  # Mariadb Container
+  db:
+    container_name: laravel-db
+    image: mysql:5.7.39
+    ports:
+      - 3306:3306
+    networks:
+      - laravel-web
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql
+
+  # Redis Container
+  redis:
+    container_name: laravel-cache
+    image: redis:alpine
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    ports:
+      - 6379:6379
+    networks:
+      - laravel-web
+
+  # PHP Container
+  php:
+    container_name: laravel-php
+    build:
+      context: ./
+      target: php
+      args:
+        - user=laravel
+        - uid=1000
+    environment:
+      - COMPOSER_MEMORY_LIMIT=-1
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - db
+      - redis
+    networks:
+      - laravel-web
+
+  nginx:
+    container_name: laravel-nginx
+    image: nginx:alpine
+    depends_on:
+      - db
+      - redis
+      - php
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./:/var/www
+      - ./Docker:/etc/nginx/conf.d/
+#    ports:
+#      - 8000:8000
+    networks:
+      - laravel-web
+      - traefik-proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.laravel.entrypoints: "websecure"
+      traefik.http.routers.laravel.rule: "Host(`oldlaravel.bubble-node.net`)"
+      traefik.http.services.laravel.loadbalancer.server.port: 8000
+      traefik.http.routers.laravel.tls.certresolver: "cloudflare"
+      traefik.http.routers.laravel.tls: true
+
+networks:
+  traefik-proxy:
+    external: true
+  laravel-web:
+    driver: bridge
+volumes:
+  db-data:

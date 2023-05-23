@@ -63,13 +63,16 @@ services:
     networks:
       - laravel-web
       - traefik-proxy
-    labels:
-      traefik.enable: true
-      traefik.http.routers.laravel.entrypoints: "websecure"
-      traefik.http.routers.laravel.rule: "Host(`oldlaravel.bubble-node.net`)"
-      traefik.http.services.laravel.loadbalancer.server.port: 8000
-      traefik.http.routers.laravel.tls.certresolver: "cloudflare"
-      traefik.http.routers.laravel.tls: true
+
+# Remove hashtag to use labels
+# Labels used for Traefik reverse proxy and loadbalancing
+#    labels:
+#      traefik.enable: true
+#      traefik.http.routers.laravel.entrypoints: "websecure"
+#      traefik.http.routers.laravel.rule: "Host(`oldlaravel.bubble-node.net`)"
+#      traefik.http.services.laravel.loadbalancer.server.port: 8000
+#      traefik.http.routers.laravel.tls.certresolver: "cloudflare"
+#      traefik.http.routers.laravel.tls: true
 
 networks:
   traefik-proxy:

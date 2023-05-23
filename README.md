@@ -29,13 +29,38 @@ IDENTIFIED WITH mysql_native_password BY '{your_password}';
 
 ### Makefile commands
 
+##### Building Laravel php image into laravel-docker:latest
+```make
+make build
 ```
-make build      ---------- Building Laravel php image into laravel-docker:latest
-make stop       ---------- Stopping web application stack, stopping all running containers
-make up         ---------- Starting web application stack, bringing up all containers
-make down       ---------- Bringing down the entire stack and removing the containers
-make restart    ---------- Do a fresh startup of the web app as if it was just deployed
-make ub         ---------- Starting web application stack while rebuillding the image from the beginning
-make it         ---------- Enter php CLI environment, for running php and artisan commands to the web application
+
+##### Stopping web application stack, stopping all running containers
+```make
+make stop
+```
+
+##### Starting web application stack, bringing up all containers
+```make
+make up
+```
+
+##### Bringing down the entire stack and removing the containers
+```make
+make down
+```
+
+##### Do a fresh startup of the web app as if it was just deployed
+```make
+make restart
+```
+
+##### Starting web application stack while rebuillding the image from the beginning
+```make
+make ub
+```
+
+##### Enter php CLI environment, for running php and artisan commands to the web application
+```make
+make it
 ```
 

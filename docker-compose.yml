@@ -58,11 +58,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./:/var/www
       - ./Docker:/etc/nginx/conf.d/
-#    ports:
-#      - 8000:8000
+    ports:
+      - 8000:8000
     networks:
       - laravel-web
-      - traefik-proxy
+#      - traefik-proxy
 
 # Remove hashtag to use labels
 # Labels used for Traefik reverse proxy and loadbalancing
@@ -75,8 +75,8 @@ services:
 #      traefik.http.routers.laravel.tls: true
 
 networks:
-  traefik-proxy:
-    external: true
+#  traefik-proxy:
+#    external: true
   laravel-web:
     driver: bridge
 volumes:

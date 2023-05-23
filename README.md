@@ -29,7 +29,7 @@ IDENTIFIED WITH mysql_native_password BY '{your_password}';
 
 ### Makefile commands
 
-```make
+```
 make build      ---------- Building Laravel php image into laravel-docker:latest
 make stop       ---------- Stopping web application stack, stopping all running containers
 make up         ---------- Starting web application stack, bringing up all containers
